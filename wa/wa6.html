@@ -14,11 +14,11 @@
         /* CSS Reset and Base Styles */
         :root {
             /* Color Palette - 5 Core Colors */
-            --color-primary: #097969;     /* Vibrant Blue - Main Brand Color */
-            --color-secondary: #320d6d;   /* Emerald Green - Complementary Action Color */
-            --color-accent: #6320EE;      /* Passionate Red - Highlight / Warning Color */
-            --color-neutral: #171a21;     /* Deep Slate Gray - Neutral Text and Background */
-            --color-highlight: #fb3640;   /* Bright Yellow - Accent / Attention Color */
+            --color-primary: #097969;     /* Blue Spruce - Main Brand Color */
+            --color-secondary: #320d6d;   /* Indigo Ink - Complementary Action Color */
+            --color-accent: #6320EE;      /* Electric Indigo - Highlight / Warning Color */
+            --color-neutral: #171a21;     /* Ink Black - Neutral Text and Background */
+            --color-highlight: #fb3640;   /* Strawberry Red - Accent / Attention Color */
             
             /* Derived Colors for Flexibility */
             --color-background: color-mix(in srgb, var(--color-neutral) 10%, white);
@@ -30,11 +30,11 @@
             --font-secondary: 'Ibarra Real Nova', serif;
 
             /* Spacing System */
-            --spacing-xs: 0.25rem;
-            --spacing-sm: 0.5rem;
-            --spacing-md: 1rem;
-            --spacing-lg: 1.5rem;
-            --spacing-xl: 2rem;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
 
             /* Border Radius */
             --radius-sm: 4px;
@@ -128,8 +128,8 @@
         }
 
         .button:hover {
-            background-color: color-mix(in srgb, var(--color-primary) 80%, black);
-            border-color: var(--color-secondary);
+            background-color: color-mix(in srgb, var(--color-primary) 10%, #171a21);
+            border-color: var(--color-highlight);
             transform: scale(1.05);
         }
 
@@ -178,27 +178,27 @@
                 <div class="color-swatch" style="background-color: var(--color-primary); color: var(--color-text-light);">
                     <strong>Primary Color</strong>
                     <p>#097969</p>
-                    <small>Comeback</small>
+                    <small>Contrast Ratio: 5.31:1</small>
                 </div>
                 <div class="color-swatch" style="background-color: var(--color-secondary); color: var(--color-text-light);">
                     <strong>Secondary Color</strong>
                     <p>#320d6d</p>
-                    <small>C</small>
+                    <small>14.85:1</small>
                 </div>
                 <div class="color-swatch" style="background-color: var(--color-accent); color: var(--color-text-light);">
                     <strong>Accent Color</strong>
-                    <p>#fb3640</p>
-                    <small>C</small>
+                    <p>#6320EE</p>
+                    <small>Contrast Ratio: 7.06:1</small>
                 </div>
                 <div class="color-swatch" style="background-color: var(--color-neutral); color: var(--color-text-light);">
                     <strong>Neutral Color</strong>
                     <p>#171a21</p>
-                    <small>C</small>
+                    <small>Contrast Ratio: 17.41:1</small>
                 </div>
                 <div class="color-swatch" style="background-color: var(--color-highlight); color: var(--color-text-dark);">
                     <strong>Highlight Color</strong>
-                    <p>#6320EE</p>
-                    <small>C</small>
+                    <p>#fb3640</p>
+                    <small>Contrast Ratio: 5.7:1</small>
                 </div>
             </div>
         </section>
@@ -228,7 +228,7 @@
             <h2>Interactive Components</h2>
             <a href="#" class="button">Primary Button</a>
             <a href="#" class="link">Standard Link</a>
-            <a href="#" class="link" style="color: purple;">Visited Link</a>
+            <a href="#" class="link" style="color: #6320EE;">Visited Link</a>
         </section>
     </div>
 </body>
