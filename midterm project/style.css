@@ -1,0 +1,127 @@
+:root {
+            /* Color Palette - 5 Core Colors */
+            --color-primary: #097969;     /* Blue Spruce - Main Brand Color */
+            --color-secondary: #320d6d;   /* Indigo Ink - Complementary Action Color */
+            --color-accent: #6320EE;      /* Electric Indigo - Highlight / Warning Color */
+            --color-neutral: #171a21;     /* Ink Black - Neutral Text and Background */
+            --color-highlight: #fb3640;   /* Strawberry Red - Accent / Attention Color */
+            
+            /* Derived Colors for Flexibility */
+            --color-background: color-mix(in srgb, var(--color-neutral) 10%, white);
+            --color-text-dark: var(--color-neutral);
+            --color-text-light: white;
+
+            /* Typography */
+            --font-primary: 'IBM Plex Sans', sans-serif;
+            --font-secondary: 'Ibarra Real Nova', serif;
+
+            /* Spacing System */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    background-color: var(--color-background);
+    color: var(--color-text-dark);
+    padding: var(--spacing-xl);
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
+    font-family: var(--font-secondary);
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-secondary);
+    font-family: var(--font-secondary);
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-accent);
+    font-family: var(--font-secondary);
+}
+
+.body-text {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.small-text {
+    font-size: 0.75rem;
+    color: color-mix(in srgb, var(--color-text-dark) 70%, transparent);
+}
+
+.link {
+    color: var(--color-secondary);
+    text-decoration: none;
+    transition: color 0.5s ease;
+}
+
+.link:visited {
+    color: var(--color-secondary);
+}
+
+.link:hover {
+    color: var(--color-highlight);
+    text-decoration: underline;
+    text-decoration-color: var(--color-highlight);
+}
+
+.link-text {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    transition: color 0.5s ease;
+}
+
+.link-text:visited {
+    color: var(--color-secondary);
+}
+
+.link-text:hover {
+    color: var(--color-highlight);
+    text-decoration: underline;
+    text-decoration-color: var(--color-highlight);
+}
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+}
