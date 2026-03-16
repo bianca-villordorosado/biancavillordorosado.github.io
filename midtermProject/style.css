@@ -1,6 +1,6 @@
 :root {
             /* Color Palette - 5 Core Colors */
-            --color-primary: #0CB098;     /* Ocean Mist - Main Brand Color */
+            --color-primary: #097969;     /* Blue Spruce - Main Brand Color */
             --color-secondary: #320d6d;   /* Indigo Ink - Complementary Action Color */
             --color-accent: #6320EE;      /* Electric Indigo - Highlight / Warning Color */
             --color-neutral: #171a21;     /* Ink Black - Neutral Text and Background */
@@ -158,8 +158,9 @@ section {
 }
 
 .nav-link[aria-current="page"] {
-    color: black;
     font-weight: 600;
+    border: solid 2px;
+    padding: 5px;
 }
 
 .nav-link:hover {
