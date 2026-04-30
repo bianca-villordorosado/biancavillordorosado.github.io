@@ -1,6 +1,7 @@
 let volume = 0;
 let eventTimer = "";
 let timeLeft = 0;
+let nextEventTimer = null;
 
 let currentSentence = "";
 let currentProblem = "";
@@ -9,12 +10,17 @@ let userColors = [];
 let correctColors = [];
 let currentEventType = "";
 
+const eventTime = 30000;
+
 const sentences = [
-    "Peter Piper picked a peck of pickled peppers.",
+    "Peter Piper picked a peck of pickled peppers",
     "Betty Botter bought some butter",
-    "She sells seashells by the seashore.",
-    "Near an ear, a nearer ear, a nearly eerie ear.",
-    "Four fine fresh fish for you."
+    "She sells seashells by the seashore",
+    "Near an ear, a nearer ear, a nearly eerie ear",
+    "Four fine fresh fish for you",
+    "Silly sheep weep and sleep",
+    "Busy buzzing bumble bees",
+    "Sick thick thistle sticks"
 ] 
 
 const operations = ["+", "-", "*"]
@@ -24,9 +30,15 @@ const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
 document.getElementById("startButton").addEventListener("click", startEvent);
 document.getElementById("submitButton").addEventListener("click", checkEvent);
 document.getElementById("endButton").addEventListener("click", endEvent);
+document.getElementById("undoColorButton").addEventListener("click", undoColor);
+document.getElementById("finalizeButton").addEventListener("click", finalizeVolume)
 
 function updateVolume() {
     document.getElementById("volumeDisplay").textContent = "Current Volume: " + volume;
+}
+
+function addVolume(amount) {
+    volume = Math.max(0, Math.min(100, volume + amount));
 }
 
 function startTimer(duration) {
@@ -41,10 +53,14 @@ function startTimer(duration) {
 
         if (timeLeft <= 0) {
             clearInterval(eventTimer);
-            volume = volume - 1;
+            addVolume(-1);
             updateVolume();
 
-            document.getElementById("eventPrompt").textContent = "Time's up!";
+            document.getElementById("eventPrompt").textContent = "Time's up! -1 volume";
+
+            setTimeout(() => {
+                startNextEventCountdown();
+            }, 1500);
         }
     }, 1000);
 }
@@ -57,6 +73,14 @@ function stopTimer() {
     clearInterval(eventTimer);
 }
 
+function resetAllTimers() {
+    clearInterval(eventTimer);
+    eventTimer = null;
+
+    clearInterval(nextEventTimer);
+    nextEventTimer = null;
+}
+
 function typingEvent() {
     clearColorChoices();
     currentEventType = "typing";
@@ -64,13 +88,13 @@ function typingEvent() {
     const randomIndex = Math.floor(Math.random() * sentences.length);
     currentSentence = sentences[randomIndex];
 
-    document.getElementById("eventPrompt").textContent = "Type: " + currentSentence;
+    document.getElementById("eventPrompt").textContent = "Type this sentence: " + currentSentence;
     document.getElementById("submitButton").style.display = "inline-block";
     document.getElementById("userInput").style.display = "inline-block";
     document.getElementById("userInput").value = "";
     document.getElementById("timerDisplay").style.display = "inline-block";
 
-    startTimer(10000);
+    startTimer(eventTime);
 }
 
 function mathEvent() {
@@ -79,8 +103,8 @@ function mathEvent() {
 
     const randomProblem = operations[Math.floor(Math.random() * operations.length)];
 
-    const num1 = Math.floor(Math.random() * 50) + 1;
-    const num2 = Math.floor(Math.random() * 50) + 1;
+    let num1 = Math.floor(Math.random() * 50) + 1;
+    let num2 = Math.floor(Math.random() * 50) + 1;
 
     if (randomProblem == "+") {
         correctAnswer = num1 + num2;
@@ -102,7 +126,7 @@ function mathEvent() {
     document.getElementById("timerDisplay").style.display = "inline-block";
     document.getElementById("userInput").value = "";
 
-    startTimer(10000);
+    startTimer(eventTime);
 }
 
 function renderColorChoices() {
@@ -116,19 +140,37 @@ function renderColorChoices() {
 
         box.addEventListener("click", () => {
             userColors.push(color);
-
-            if (userColors.length === correctColors.length) {
-                checkEvent();
-            }
+            renderSelectedColors();
         });
 
         colorContainer.appendChild(box);
     })
 }
 
+function renderSelectedColors() {
+    const selectedColorsBoxes = document.getElementById("selectedColors");
+    selectedColorsBoxes.innerHTML = "";
+
+    userColors.forEach(color => {
+        const box = document.createElement("div");
+
+        box.classList.add("selectedColorBox");
+        box.style.backgroundColor = color;
+
+        selectedColorsBoxes.appendChild(box);
+    });
+}
+
+function undoColor() {
+    userColors.pop();
+    renderSelectedColors();
+}
+
 function clearColorChoices() {
     document.getElementById("colorDisplay").innerHTML = "";
     document.getElementById("colorChoices").innerHTML = "";
+    document.getElementById("selectedColors").innerHTML = "";
+    document.getElementById("undoColorButton").style.display = "none";
 
     correctColors = [];
     userColors = [];
@@ -140,6 +182,8 @@ function colorEvent() {
 
     const display = document.getElementById("colorDisplay");
     display.innerHTML = "";
+    document.getElementById("selectedColors").innerHTML = "";
+    document.getElementById("colorChoices").innerHTML = "";
     correctColors = [];
     userColors = [];
 
@@ -163,6 +207,8 @@ function colorEvent() {
     setTimeout(() => {
         display.innerHTML = "";
         document.getElementById("eventPrompt").textContent = "Enter the color sequence";
+        document.getElementById("submitButton").style.display = "inline-block";
+        document.getElementById("undoColorButton").style.display = "inline-block";
 
         renderColorChoices();
     }, 2000);
@@ -172,6 +218,18 @@ function colorEvent() {
 
 
 function startEvent() {
+    resetAllTimers();
+    if (currentEventType === "ended" || currentEventType === "finalized") {
+        currentEventType = "";
+    }
+
+    if (currentEventType === "ended" || currentEventType === "finalized") {
+        return;
+    }
+
+    document.getElementById("submitButton").style.display = "none";
+    document.getElementById("userInput").style.display = "none";
+
     const eventType = Math.floor(Math.random() * 3);
     
     if (eventType == 0) {
@@ -181,6 +239,25 @@ function startEvent() {
     } else if (eventType == 2) {
         colorEvent();
     }
+}
+
+function startNextEventCountdown() {
+    resetAllTimers();
+
+    let countdown = 5;
+
+    document.getElementById("eventPrompt").textContent = "Next event in " + countdown + "...";
+
+    nextEventTimer = setInterval(() => {
+        countdown = countdown - 1;
+        document.getElementById("eventPrompt").textContent = "Next event in " + countdown + "...";
+
+        if (countdown <= 0) {
+            clearInterval(nextEventTimer);
+            nextEventTimer = null;
+            startEvent();
+        }
+    }, 1000);
 }
 
 function checkEvent() {
@@ -198,18 +275,24 @@ function checkEvent() {
     }
 
     if (isCorrect) {
-        volume = volume + 10;
+        addVolume(10);
+        document.getElementById("eventPrompt").textContent = "Success! +10 volume";
     } else {
-        volume = volume - 1;
+        addVolume(-1);
+        document.getElementById("eventPrompt").textContent = "Event Failed! -1 volume";
     }
 
     updateVolume();
     document.getElementById("userInput").value = "";
+
+    setTimeout(() => {
+        startNextEventCountdown();
+    }, 1500);
 }
 
 function endEvent() {
-    stopTimer();
-    currentEventType = "";
+    resetAllTimers();
+    currentEventType = "ended";
 
     document.getElementById("eventPrompt").textContent = "";
     document.getElementById("userInput").value = "";
@@ -223,4 +306,23 @@ function endEvent() {
 
     timeLeft = 0;
     updateTimerDisplay();
+}
+
+function finalizeVolume() {
+    stopTimer();
+
+    if (nextEventTimer !== null) {
+        clearInterval(nextEventTimer);
+        nextEventTimer = null;
+    }
+
+    currentEventType = "finalized";
+
+    document.getElementById("eventPrompt").textContent = "Final Volume: " + volume;
+
+    document.getElementById("userInput").style.display = "none";
+    document.getElementById("submitButton").style.display = "none";
+    document.getElementById("undoColorButton").style.display = "none";
+    document.getElementById("timerDisplay").style.display = "none";
+    clearColorChoices();    
 }

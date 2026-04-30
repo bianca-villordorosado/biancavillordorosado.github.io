@@ -7,23 +7,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="info">
-        <p id="volumeDisplay">Current Volume: 0</p>
-        <p id="timerDisplay">Time: 0</p>
-    </div>
 
-    <div id="event">
-        <p id="eventPrompt"></p>
-        <div id="colorDisplay"></div>
-        <div id="colorChoices"></div>
-        <input type="text" id="userInput">
-        <button id="submitButton">Submit</button>
-    </div>
+    <div id="content">
 
-    <div id="startEnd">
-        <button id="startButton">Start New Event</button>
-        <button id="endButton">End Event</button>
-    </div>  
+        <div id="about">
+        <h1>Quick Time Event Volume Changer</h1>
+        <p>A random quick time event will appear. Successfully completing a quick time event will increase your volume by 10. Failing a quick time event or running out of time will decrease your volume by 1. </p>
+        </div> 
+
+        <div id="info">
+            <p id="volumeDisplay">Current Volume: 0</p>
+            <p id="timerDisplay">Time: 0</p>
+        </div>
+
+        <div id="startEnd">
+            <button id="startButton">Start New Event</button>
+            <button id="endButton">End Event</button>
+            <button id="finalizeButton">Finalize Volume</button>
+        </div>
+
+        <div id="event">
+            <p id="eventPrompt"></p>
+
+            <div id="colorDisplay"></div>
+            <div id="colorChoices"></div>
+            <div id="selectedColors"></div>
+            <button id="undoColorButton">Undo Color</button>
+
+            <input type="text" id="userInput">
+            <button id="submitButton">Submit</button>
+        </div>
+
+    </div>
 
     <script src="main.js"></script>
 </body>
